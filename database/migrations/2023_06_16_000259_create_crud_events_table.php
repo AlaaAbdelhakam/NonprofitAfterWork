@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('company', function (Blueprint $table) {
+        Schema::create('crud_events', function (Blueprint $table) {
             $table->id();
-            $table->text('company_name');
-            $table->text('company_code');
-            $table->text('created_by')->nullable();
-            $table->text('deleted_by')->nullable();
-            $table->text('updated_by')->nullable();
-            $table->softDeletes();
+            $table->string('event_name');
+            $table->date('event_start');
+            $table->date('event_end'); 
             $table->timestamps();
         });
     }
@@ -32,7 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('company', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });    }
+        Schema::dropIfExists('crud_events');
+    }
 };

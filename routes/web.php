@@ -2,8 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
-use App\Http\Controllers\LiveSearch;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\admin\ArticlesController;
+use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\CalenderController;
+use App\Http\Controllers\FullCalendarController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SongsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,12 +19,21 @@ use App\Http\Controllers\TaskController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('songs/create', [SongsController::class, 'create'])->name('song.create');
+Route::post('songs', [SongsController::class, 'store'])->name('song.store');
+
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+// Route::get('ckeditor', [FullCalendarController::class, 'index']);
+// Route::post('fullcalendar/create', [FullCalendarController::class, 'create']);
+// Route::post('fullcalendar/update', [FullCalendarController::class, 'update']);
+// Route::post('fullcalendar/delete', [FullCalendarController::class, 'destroy']);
 Auth::routes(['register'=>false]);
-
+Route::get('calendar-event', [CalenderController::class, 'index']);
+Route::post('calendar-crud-ajax', [CalenderController::class, 'calendarEvents']);
+Route::get('calendar', [HomeController::class, 'index'])->name('calender');
 
 Route::group(['namespace' => 'App\Http\Controllers'], function()
 {   
@@ -29,7 +43,20 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
 
     Route::get('/', 'HomeControllerr@index');
-
+    Route::get('/getevent', 'FullCalendarController@getEvent');
+Route::post('/createevent','FullCalendarController@createEvent');
+Route::post('/deleteevent','FullCalendarController@deleteEvent');
+    ####################################################### News
+    Route::get('/index','front\ArticlesController@index')->name('index');
+    Route::get('/article/{id}','front\ArticlesController@article')->name('article');
+    Route::get('/category/{id}','front\ArticlesController@category')->name('category');
+    Route::post('/comment/insert/{id}','front\ArticlesController@comment_insert')->name('comment');
+    
+    Route::get('/comment/delete/{id}','front\ArticlesController@comment_delete') -> name('deletecomment');
+    
+    
+    Route::post('/search','front\ArticlesController@search')->name('search');
+    ###########################################################################################################
     // Route::get('/', 'HomeController@index')->name('home.index');
 
     // Route::group(['middleware' => ['guest']], function() {
@@ -37,7 +64,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     // });
 
     Route::group(['middleware' => ['auth', 'permission']], function() {
-       
+     
         Route::group(['prefix' => 'posts'], function() {
             Route::get('/', 'PostsController@index')->name('posts.index');
             Route::get('/create', 'PostsController@create')->name('posts.create');
@@ -64,6 +91,8 @@ Route::group([
         
     Route::group(['prefix' => 'admin'], function () {
     Route::get('/', [App\Http\Controllers\Dashboard\DashboardController::class, 'index'])->name('admin.dashboard');
+
+   
     });
 
 });
@@ -259,8 +288,32 @@ Route::group([
     // Route::get('/live_search',[App\Http\Controllers\LiveSearch::class, 'index'])->name('live_search');
     Route::get('/live_search/action', [App\Http\Controllers\LiveSearch::class, 'action'])->name('live_search.action');
 
+    Route::group(['namespace' => 'App\Http\Controllers\admin','prefix' => 'admin'], function () {
+      ####################################################################################### News
+      Route::get('/category','CategoryController@index')->name('category.index');
+      Route::get('/category/create','CategoryController@create')->name('category.create');
+      Route::get('/category/trashed','CategoryController@trashed')->name('category.trashed');
+      Route::post('/category/insert','CategoryController@insert')->name('category.insert');
+      Route::get('/category/trash/{id}','CategoryController@trash')->name('category.trash');
+      Route::get('/category/restore/{id}','CategoryController@restore')->name('category.restore');
+      Route::get('/category/remove/{id}','CategoryController@remove')->name('category.remove');
+      Route::get('/category/edit/{id}','CategoryController@edit')->name('category.edit');
+      Route::post('/category/update/{id}','CategoryController@update')->name('category.update');
+    
+    
+      Route::get('/articles','ArticlesController@index')->name('articles.index');
+      Route::get('/articles/create','ArticlesController@create')->name('articles.create');
+      Route::get('/articles/trashed','ArticlesController@trashed')->name('articles.trashed');
+      Route::post('/articles/insert','ArticlesController@insert')->name('articles.insert');
+      Route::get('/articles/trash/{id}','ArticlesController@trash')->name('articles.trash');
+      Route::get('/articles/restore/{id}','ArticlesController@restore')->name('articles.restore');
+      Route::get('/articles/remove/{id}','ArticlesController@remove')->name('articles.remove');
+      Route::get('/articles/edit/{id}','ArticlesController@edit')->name('articles.edit');
+      Route::post('/articles/update/{id}','ArticlesController@update')->name('articles.update');
+        Route::post('/articlessearch','ArticlesController@search')->name('search');
 
-
+    });
+      ########################################################################################################
 
 
     Route::group(['namespace' => 'App\Http\Controllers'], function()

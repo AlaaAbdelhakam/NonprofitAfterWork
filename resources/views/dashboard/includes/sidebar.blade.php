@@ -71,21 +71,21 @@
                     </a>
                     <ul class="menu-content">
                         {{-- <li class="active"> --}}
-                            {{-- <a class="menu-item" href="{{ route('admin.brands') }}"data-i18n="nav.dash.ecommerce">  </a> --}}
-                            {{-- @role('superadmin')
+                        {{-- <a class="menu-item" href="{{ route('admin.brands') }}"data-i18n="nav.dash.ecommerce">  </a> --}}
+                        {{-- @role('superadmin')
                             <li class="active"><a class="menu-item" href="{{ route('admin.carmodel') }}"
                                     data-i18n="nav.dash.ecommerce"> موديلات السيارات </a>
                             </li> --}}
-                            {{-- @endrole --}}
-                            {{-- @role('superadmin') --}}
+                        {{-- @endrole --}}
+                        {{-- @role('superadmin') --}}
 
-                            {{-- <li><a class="menu-item" href="{{ route('admin.carmodel.create') }}"
+                        {{-- <li><a class="menu-item" href="{{ route('admin.carmodel.create') }}"
                                     data-i18n="nav.dash.crypto">اضافة موديل جديد
                                 </a>
                             </li> --}}
-                            {{-- @role('superadmin') --}}
-                    {{-- </li> --}}
-                    {{-- <li class="active"><a class="menu-item" href="{{ route('admin.cars') }}"
+                        {{-- @role('superadmin') --}}
+                        {{-- </li> --}}
+                        {{-- <li class="active"><a class="menu-item" href="{{ route('admin.cars') }}"
                             data-i18n="nav.dash.crypto">السيارة </a>
                     </li>
                     <li><a class="menu-item" href="{{ route('admin.cars.create') }}" data-i18n="nav.dash.crypto">أضافة
@@ -93,24 +93,24 @@
                         </a>
                     </li>
                     </li> --}}
-                    <li class="active"><a class="menu-item" href="{{ route('admin.drivers') }}"
+                        {{-- <li class="active"><a class="menu-item" href="{{ route('admin.drivers') }}"
                             data-i18n="nav.dash.ecommerce"> السائق </a>
-                    </li>
-                    {{-- @endrole --}}
-                    {{-- @role('superadmin') --}}
+                    </li> --}}
+                        {{-- @endrole --}}
+                        {{-- @role('superadmin') --}}
 
-                    <li><a class="menu-item" href="{{ route('admin.drivers.create') }}" data-i18n="nav.dash.crypto">أضافة
+                        {{-- <li><a class="menu-item" href="{{ route('admin.drivers.create') }}" data-i18n="nav.dash.crypto">أضافة
                             سائق
                         </a>
                     </li>
-                    </li>
-                    {{-- <li class="active"><a class="menu-item" href="{{ route('admin.codriver') }}"
+                    </li> --}}
+                        {{-- <li class="active"><a class="menu-item" href="{{ route('admin.codriver') }}"
                             data-i18n="nav.dash.ecommerce">السائق الاحتياطي </a>
                     </li> --}}
-                    {{-- @endrole --}}
-                    {{-- @role('superadmin') --}}
+                        {{-- @endrole --}}
+                        {{-- @role('superadmin') --}}
 
-                    {{-- <li><a class="menu-item" href="{{ route('admin.codriver.create') }}" data-i18n="nav.dash.crypto">أضافة
+                        {{-- <li><a class="menu-item" href="{{ route('admin.codriver.create') }}" data-i18n="nav.dash.crypto">أضافة
                             سائق احتياطي
                         </a>
                     </li>
@@ -118,10 +118,10 @@
                     <li class="active"><a class="menu-item" href="{{ route('admin.company') }}"
                             data-i18n="nav.dash.ecommerce">الشركة المتعامل معها </a>
                     </li> --}}
-                    {{-- @endrole --}}
-                    {{-- @role('superadmin') --}}
+                        {{-- @endrole --}}
+                        {{-- @role('superadmin') --}}
 
-                    {{-- <li><a class="menu-item" href="{{ route('admin.company.create') }}" data-i18n="nav.dash.crypto">أضافة
+                        {{-- <li><a class="menu-item" href="{{ route('admin.company.create') }}" data-i18n="nav.dash.crypto">أضافة
                             شركة جديدة
                         </a>
                     </li>
@@ -130,45 +130,44 @@
                     <li class="active"><a class="menu-item" href="{{ route('admin.city') }}"
                             data-i18n="nav.dash.ecommerce"> المدينة </a>
                     </li> --}}
-                    {{-- @endrole --}}
-                    {{-- @role('superadmin') --}}
+                        {{-- @endrole --}}
+                        {{-- @role('superadmin') --}}
 
-                    {{-- <li><a class="menu-item" href="{{ route('admin.city.create') }}" data-i18n="nav.dash.crypto">أضافة
+                        {{-- <li><a class="menu-item" href="{{ route('admin.city.create') }}" data-i18n="nav.dash.crypto">أضافة
                             مدينة
                         </a>
                     </li> --}}
-                    {{-- @endrole --}}
-                    {{-- <li><a class="menu-item" href="{{ route('search.drivers') }}"
+                        {{-- @endrole --}}
+                        {{-- <li><a class="menu-item" href="{{ route('search.drivers') }}"
                     data-i18n="nav.dash.crypto">بحث سائق
                 </a>
             </li> --}}
-                    <li class="active"><a class="menu-item" href="{{ route('admin.users') }}"
-                            data-i18n="nav.dash.ecommerce"> المسخدمين </a>
-                    </li>
-                    </li>
-                    <li><a class="menu-item" href="{{ route('admin.users.create') }}" data-i18n="nav.dash.crypto">أضافة
-                            مستخدم
-                        </a>
-                    </li>
+                        <li class="active"><a class="menu-item" href="{{ route('admin.users') }}"
+                                data-i18n="nav.dash.ecommerce"> المسخدمين </a>
+                        </li>
+                </li>
+                <li><a class="menu-item" href="{{ route('admin.users.create') }}" data-i18n="nav.dash.crypto">أضافة
+                        مستخدم
+                    </a>
+                </li>
                 {{-- @endrole --}}
             </ul>
-            {{-- <li class="nav-item"><a href="">
-                        <span class="menu-title" data-i18n="nav.dash.main"> السائق </span>
-                        <span
-                        class="badge badge badge-danger badge-pill float-right mr-2">
-                         {{-- {{ \App\Models\Tag::count() }} --}}
-            {{-- </span>
-                    </a>
-                    <ul class="menu-content">
-                        <li class="active"><a class="menu-item" href="{{ route('admin.tags') }}"
-                                data-i18n="nav.dash.ecommerce"> عرض الكل </a>
-                        </li> --}}
-            {{-- <li><a class="menu-item" href="{{ route('admin.tags.create') }}"
-                                data-i18n="nav.dash.crypto">أضافة
-                            </a>
-                        </li> --}}
-            {{-- </ul>
-                </li> --}}
+            <li class="nav-item"><a href="">
+                    <span class="menu-title" data-i18n="nav.dash.main"> الاخبار </span>
+                    <span class="badge badge badge-danger badge-pill float-right mr-2">
+                        {{-- {{ \App\Models\Tag::count() }} --}}
+                    </span>
+                </a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{{ route('category.index') }}" data-i18n="nav.dash.ecommerce">الاقسام
+                        </a>
+                    </li>
+                    <li class="active"><a class="menu-item" href="{{ route('articles.index') }}"
+                            data-i18n="nav.dash.crypto">الاخبار
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
             {{-- <li class="nav-item"><a href="">
                     <span class="menu-title" data-i18n="nav.dash.main">اوامر الشغل</span>
@@ -185,22 +184,22 @@
                 </ul>
             </li> --}}
             {{-- @role('developer') --}}
-                {{-- <li class="nav-item"><a href="">
-                        <span class="menu-title" data-i18n="nav.dash.main">الخزينة </span>
+            <li class="nav-item"><a href="">
+                        <span class="menu-title" data-i18n="nav.dash.main">النتيجة </span>
                         <span class="badge badge badge-success badge-pill float-right mr-2"> </span>
                     </a>
                     <ul class="menu-content">
-                        <li class="active"><a class="menu-item" href="" data-i18n="nav.dash.ecommerce"> عرض
-                                الكل </a>
-                        </li> --}}
-                        {{-- <li><a class="menu-item" href="{{ route('admin.attributes.create') }}"
+                        <li class="active"><a class="menu-item" href="{{ route('calender') }}" data-i18n="nav.dash.ecommerce"> عرض
+                                 </a>
+                        </li>
+            {{-- <li><a class="menu-item" href="{{ route('admin.attributes.create') }}"
                                 data-i18n="nav.dash.crypto">أاضافة
                                 جديدة </a>
                         </li> --}}
-                    {{-- </ul>
+            {{-- </ul>
                 </li> --}}
 
-                {{-- <li class="nav-item"><a href="">
+            {{-- <li class="nav-item"><a href="">
                         <span class="menu-title" data-i18n="nav.dash.main">تقارير </span>
                         <span class="badge badge badge-success badge-pill float-right mr-2"> </span>
                     </a>
@@ -213,46 +212,46 @@
                         </li>
                     </ul>
                 </li> --}}
-                {{-- <li class="nav-item"><a href="{{ route('live_search') }}"> --}}
-                {{-- <span class="menu-title" data-i18n="nav.dash.main">بحث سريع </span>
+            {{-- <li class="nav-item"><a href="{{ route('live_search') }}"> --}}
+            {{-- <span class="menu-title" data-i18n="nav.dash.main">بحث سريع </span>
                 <span class="badge badge badge-success badge-pill float-right mr-2"> </span> --}}
-                {{-- </a>
+            {{-- </a>
                 </li> --}}
-                {{-- @auth --}}
+            {{-- @auth --}}
 
-                <li class="nav-item">
-                    <a href="{{ route('roles.index') }}">
-                        <i class="la la-male"></i>
-                        <span class="menu-title" data-i18n="nav.dash.main">roles </span>
-                        <span class="badge badge badge-warning  badge-pill float-right mr-2"></span>
-                    </a>
-                    <ul class="menu-content">
-                        <li class="active">
-                            <a class="menu-item" href="{{ route('roles.index') }}" data-i18n="nav.dash.ecommerce">
-                                عرض الكل </a>
-                        </li>
-                        {{-- <li><a class="menu-item" href="" data-i18n="nav.dash.crypto">أضافة
+            <li class="nav-item">
+                <a href="{{ route('roles.index') }}">
+                    <i class="la la-male"></i>
+                    <span class="menu-title" data-i18n="nav.dash.main">roles </span>
+                    <span class="badge badge badge-warning  badge-pill float-right mr-2"></span>
+                </a>
+                <ul class="menu-content">
+                    <li class="active">
+                        <a class="menu-item" href="{{ route('roles.index') }}" data-i18n="nav.dash.ecommerce">
+                            عرض الكل </a>
+                    </li>
+                    {{-- <li><a class="menu-item" href="" data-i18n="nav.dash.crypto">أضافة
                                 طالب </a>
                         </li> --}}
-                    </ul>
-                </li>
+                </ul>
+            </li>
 
 
-                <li class="nav-item">
-                    <a href="{{ route('permissions.index') }}"><i class="la la-male"></i>
-                        <span class="menu-title" data-i18n="nav.dash.main">permissions</span>
-                        <span class="badge badge badge-danger  badge-pill float-right mr-2">0</span>
-                    </a>
-                    <ul class="menu-content">
-                        <li class="active">
-                            <a class="menu-item" href="{{ route('permissions.index') }}"
-                                data-i18n="nav.dash.ecommerce"> عرض الكل </a>
-                        </li>
-                        {{-- <li><a class="menu-item" href="" data-i18n="nav.dash.crypto">أضافة
+            <li class="nav-item">
+                <a href="{{ route('permissions.index') }}"><i class="la la-male"></i>
+                    <span class="menu-title" data-i18n="nav.dash.main">permissions</span>
+                    <span class="badge badge badge-danger  badge-pill float-right mr-2">0</span>
+                </a>
+                <ul class="menu-content">
+                    <li class="active">
+                        <a class="menu-item" href="{{ route('permissions.index') }}" data-i18n="nav.dash.ecommerce"> عرض
+                            الكل </a>
+                    </li>
+                    {{-- <li><a class="menu-item" href="" data-i18n="nav.dash.crypto">أضافة
                                 طالب </a>
                         </li> --}}
-                    </ul>
-                </li>
+                </ul>
+            </li>
             {{-- @endrole --}}
             {{-- @endauth --}}
             {{-- <li class=" nav-item"><a href="#"><i class="la la-television"></i><span class="menu-title"

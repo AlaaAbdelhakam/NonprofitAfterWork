@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('car_model', function (Blueprint $table) {
+        Schema::create('songs', function (Blueprint $table) {
             $table->id();
-            $table->text('car_model_name');
-            $table->text('created_by')->nullable();
-            $table->text('deleted_by')->nullable();
-            $table->text('updated_by')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -31,7 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('car_model', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });    }
+        Schema::dropIfExists('songs');
+    }
 };

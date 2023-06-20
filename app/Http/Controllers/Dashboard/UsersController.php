@@ -20,7 +20,7 @@ class UsersController extends Controller
     {
         $tasks_trashed = User::onlyTrashed()->get();
 
-        $data = User::orderBy('id','DESC')->paginate(1);
+        $data = User::orderBy('id','DESC')->paginate(2);
         // $users = Users::latest()->paginate(2);
         return view('dashboard.users.index',compact('data','tasks_trashed'));
     }
