@@ -1,54 +1,67 @@
 <?php
 
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
-use App\Models\CrudEvents;
-class CalenderController extends Controller
+use App\Models\CalendarEvent;
+
+class CalendarController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        if($request->ajax()) {  
-            $data = CrudEvents::whereDate('event_start', '>=', $request->start)
-                ->whereDate('event_end',   '<=', $request->end)
-                ->get(['id', 'event_name', 'event_start', 'event_end']);
-            return response()->json($data);
-        }
-        return view('welcome');
+        return view('calendar');
     }
- 
-    public function calendarEvents(Request $request)
+
+    public function getEvents()
     {
- 
-        switch ($request->type) {
-           case 'create':
-              $event = CrudEvents::create([
-                  'event_name' => $request->event_name,
-                  'event_start' => $request->event_start,
-                  'event_end' => $request->event_end,
-              ]);
- 
-              return response()->json($event);
-             break;
-  
-           case 'edit':
-              $event = CrudEvents::find($request->id)->update([
-                  'event_name' => $request->event_name,
-                  'event_start' => $request->event_start,
-                  'event_end' => $request->event_end,
-              ]);
- 
-              return response()->json($event);
-             break;
-  
-           case 'delete':
-              $event = CrudEvents::find($request->id)->delete();
-  
-              return response()->json($event);
-             break;
-             
-           default:
-             # ...
-             break;
+        $events = CalendarEvent::all();
+
+        $formattedEvents = [];
+
+        foreach ($events as $event) {
+            $formattedEvent = [
+                'id' => $event->id,
+                'title' => $event->title,
+                'start' => $event->start,
+                'end' => $event->end,
+            ];
+
+            $formattedEvents[] = $formattedEvent;
         }
+
+        return response()->json($formattedEvents);
+    }
+
+    public function storeEvent(Request $request)
+    {
+        $event = CalendarEvent::create([
+            'title' => $request->title,
+            'start' => $request->start,
+            'end' => $request->end,
+        ]);
+
+        return response()->json($event);
+    }
+
+    public function updateEvent(Request $request, $id)
+    {
+        $event = CalendarEvent::findOrFail($id);
+
+        $event->update([
+            'title' => $request->title,
+            'start' => $request->start,
+            'end' => $request->end,
+        ]);
+
+        return response()->json($event);
+    }
+
+    public function deleteEvent($id)
+    {
+        $event = CalendarEvent::findOrFail($id);
+        $event->delete();
+
+        return response()->json($event);
     }
 }

@@ -31,12 +31,15 @@ Route::post('songs', [SongsController::class, 'store'])->name('song.store');
 // Route::post('fullcalendar/update', [FullCalendarController::class, 'update']);
 // Route::post('fullcalendar/delete', [FullCalendarController::class, 'destroy']);
 Auth::routes(['register'=>false]);
-Route::get('calendar-event', [CalenderController::class, 'index']);
-Route::post('calendar-crud-ajax', [CalenderController::class, 'calendarEvents']);
+
+Route::get('/calendar-events', [CalenderController::class, 'getEvents']);
+Route::post('/calendar-events', [CalenderController::class, 'store']);
+Route::put('/calendar-events/{id}', [CalenderController::class, 'update']);
+Route::delete('/calendar-events/{id}', [CalenderController::class, 'destroy']);
 Route::get('calendar', [HomeController::class, 'index'])->name('calender');
 
 Route::group(['namespace' => 'App\Http\Controllers'], function()
-{   
+{
     /**
      * Home Routes
      */
@@ -51,20 +54,20 @@ Route::post('/deleteevent','FullCalendarController@deleteEvent');
     Route::get('/article/{id}','front\ArticlesController@article')->name('article');
     Route::get('/category/{id}','front\ArticlesController@category')->name('category');
     Route::post('/comment/insert/{id}','front\ArticlesController@comment_insert')->name('comment');
-    
+
     Route::get('/comment/delete/{id}','front\ArticlesController@comment_delete') -> name('deletecomment');
-    
-    
+
+
     Route::post('/search','front\ArticlesController@search')->name('search');
     ###########################################################################################################
     // Route::get('/', 'HomeController@index')->name('home.index');
 
     // Route::group(['middleware' => ['guest']], function() {
-    
+
     // });
 
     Route::group(['middleware' => ['auth', 'permission']], function() {
-     
+
         Route::group(['prefix' => 'posts'], function() {
             Route::get('/', 'PostsController@index')->name('posts.index');
             Route::get('/create', 'PostsController@create')->name('posts.create');
@@ -87,12 +90,12 @@ Route::group([
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath','auth']
 ], function () {
-   
-        
+
+
     Route::group(['prefix' => 'admin'], function () {
     Route::get('/', [App\Http\Controllers\Dashboard\DashboardController::class, 'index'])->name('admin.dashboard');
 
-   
+
     });
 
 });
@@ -107,7 +110,7 @@ Route::group([
 
     Route::group(['namespace' => 'App\Http\Controllers\Dashboard', 'prefix' => 'admin'], function () {
 
-    
+
 
            Route::get('city/restore/one/{id}', 'CityController@restore')->name('city.restore');
            Route::get('city/restoreAll', 'CityController@restoreAll')->name('city.restore.all');
@@ -175,7 +178,7 @@ Route::group([
 
 
 
-           
+
         Route::group(['prefix' => 'city'], function () {
             Route::get('/','CityController@index') -> name('admin.city');
             Route::get('create','CityController@create') -> name('admin.city.create');
@@ -219,7 +222,7 @@ Route::group([
             Route::get('delete/{id}','CarController@destroy') -> name('admin.cars.delete');
         });
         ################################## end brands    #######################################
-       
+
         ################################## drivers routes ######################################
         Route::group(['prefix' => 'drivers'], function () {
             Route::get('/','DriversController@index') -> name('admin.drivers');
@@ -228,7 +231,7 @@ Route::group([
             Route::get('edit/{id}','DriversController@edit') -> name('admin.drivers.edit');
             Route::post('update/{id}','DriversController@update') -> name('admin.drivers.update');
             Route::get('delete/{id}','DriversController@destroy') -> name('admin.drivers.delete');
-           
+
 
 
 
@@ -272,8 +275,8 @@ Route::group([
 
     });
 
-   
-        
+
+
 });
 
 
@@ -299,8 +302,8 @@ Route::group([
       Route::get('/category/remove/{id}','CategoryController@remove')->name('category.remove');
       Route::get('/category/edit/{id}','CategoryController@edit')->name('category.edit');
       Route::post('/category/update/{id}','CategoryController@update')->name('category.update');
-    
-    
+
+
       Route::get('/articles','ArticlesController@index')->name('articles.index');
       Route::get('/articles/create','ArticlesController@create')->name('articles.create');
       Route::get('/articles/trashed','ArticlesController@trashed')->name('articles.trashed');
@@ -317,15 +320,15 @@ Route::group([
 
 
     Route::group(['namespace' => 'App\Http\Controllers'], function()
-    {   
+    {
         Route::resource('roles', RolesController::class);
         Route::resource('permissions', PermissionsController::class);
-        
+
     });
     Route::group(['namespace' => 'App\Http\Controllers','prefix' => 'admin'], function () {
         // Route::get('/live_search','LiveSearchdriver@index')->name('search.drivers');
         // Route::get('/live_search/action',)->name('live_search.action');
-     
+
            Route::get('/driver/search', 'LiveSearchdriver@search')->name('search.driver.action');
            Route::get('/user/search', 'UserLiveSearch@search')->name('search.users');
            Route::get('/trip/search', 'TripLiveSearch@search')->name('search.trips');
@@ -335,10 +338,10 @@ Route::group([
            Route::get('/carmodel/search', 'CarmodelLiveSearch@search')->name('search.carmodels');
            Route::get('/car/search', 'CarLiveSearch@search')->name('search.car');
 
-           
-      
 
-    
+
+
+
         });
-        
+
 });

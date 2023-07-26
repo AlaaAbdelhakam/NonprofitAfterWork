@@ -3,18 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Fullcalender</title>
+    <title>Fullcalendar</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 </head>
 <body>
-  <div style="width: 100%;max-height:500px;display:flex;justify-content:center;align-items:center;margin:auto;">
-  <div style="width:70%;margin:auto;max-height:500px;">   
-        <div id='full_calendar_events'></div>
-      </div>
+    <div style="width: 100%; max-height: 500px; display:flex; justify-content:center; align-items:center; margin:auto;">
+        <div style="width:70%; margin:auto; max-height:500px;">
+            <div id='full_calendar_events'></div>
+        </div>
     </div>
+
     {{-- Scripts --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
@@ -30,8 +31,7 @@
             });
             var calendar = $('#full_calendar_events').fullCalendar({
                 editable: true,
-                editable: true,
-                events: SITEURL + "/calendar-event",
+                events: SITEURL + "/calendar-events",
                 displayEventTime: true,
                 eventRender: function (event, element, view) {
                     if (event.allDay === 'true') {
@@ -48,11 +48,11 @@
                         var event_start = $.fullCalendar.formatDate(event_start, "Y-MM-DD HH:mm:ss");
                         var event_end = $.fullCalendar.formatDate(event_end, "Y-MM-DD HH:mm:ss");
                         $.ajax({
-                            url: SITEURL + "/calendar-crud-ajax",
+                            url: SITEURL + "/calendar-events",
                             data: {
-                                event_name: event_name,
-                                event_start: event_start,
-                                event_end: event_end,
+                                title: event_name,
+                                start: event_start,
+                                end: event_end,
                                 type: 'create'
                             },
                             type: "POST",
@@ -74,13 +74,12 @@
                     var event_start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
                     var event_end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
                     $.ajax({
-                        url: SITEURL + '/calendar-crud-ajax',
+                        url: SITEURL + '/calendar-events/' + event.id,
                         data: {
-                            title: event.event_name,
+                            title: event.title,
                             start: event_start,
                             end: event_end,
-                            id: event.id,
-                            type: 'edit'
+                            _method: 'PUT'
                         },
                         type: "POST",
                         success: function (response) {
@@ -93,10 +92,9 @@
                     if (eventDelete) {
                         $.ajax({
                             type: "POST",
-                            url: SITEURL + '/calendar-crud-ajax',
+                            url: SITEURL + '/calendar-events/' + event.id,
                             data: {
-                                id: event.id,
-                                type: 'delete'
+                                _method: 'DELETE'
                             },
                             success: function (response) {
                                 calendar.fullCalendar('removeEvents', event.id);
@@ -106,10 +104,11 @@
                     }
                 }
             });
+
+            function displayMessage(message) {
+                toastr.success(message, 'Event');
+            }
         });
-        function displayMessage(message) {
-            toastr.success(message, 'Event');            
-        }
     </script>
 </body>
 </html>

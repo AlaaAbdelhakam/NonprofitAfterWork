@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class CrudEvents extends Model
 {
     use HasFactory;
+    protected $table = 'crud_events';
+
     protected $fillable = [
-        'event_name', 
-        'event_start', 
+        'event_name',
+        'event_start',
         'event_end'
     ];
 }
