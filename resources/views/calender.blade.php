@@ -26,6 +26,7 @@
     <script>
         $(document).ready(function () {
             var SITEURL = "{{ url('/') }}";
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
             // Fetch events from the server using AJAX GET request
             $.ajax({
@@ -35,64 +36,36 @@
                     // Initialize the FullCalendar with the fetched events
                     var calendar = $('#full_calendar_events').fullCalendar({
                         editable: true,
+                        selectable: true, // Enable select event for creating new events
+                        selectHelper: true, // Show a helper when selecting a time slot
                         events: data, // Use the fetched events here
                         displayEventTime: true,
-                        eventRender: function (event, element, view) {
-                            if (event.allDay === 'true') {
-                                event.allDay = true;
-                            } else {
-                                event.allDay = false;
-                            }
-                        },
-                        selectable: true,
-                        selectHelper: true,
-                        select: function (event_start, event_end, allDay) {
-                            var event_name = prompt('Event Name:');
-                            if (event_name) {
-                                var event_start = $.fullCalendar.formatDate(event_start, "Y-MM-DD HH:mm:ss");
-                                var event_end = $.fullCalendar.formatDate(event_end, "Y-MM-DD HH:mm:ss");
-                                $.ajax({
-                                    url: SITEURL + "/calendar-events",
-                                    data: {
-                                        event_name: event_name,
-                                        event_start: event_start,
-                                        event_end: event_end,
-                                        type: 'create'
-                                    },
-                                    type: "POST",
-                                    success: function (data) {
-                                        displayMessage("Event created.");
-                                        calendar.fullCalendar('renderEvent', {
-                                            id: data.id,
-                                            title: event_name,
-                                            start: event_start,
-                                            end: event_end,
-                                            allDay: allDay
-                                        }, true);
-                                        calendar.fullCalendar('unselect');
-                                    }
-                                });
-                            }
-                        },
-                        eventDrop: function (event, delta) {
-                            var event_start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
-                            var event_end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
+                        eventDrop: function (event, delta, revertFunc) {
+                            var event_start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
+                            var event_end = event.end ? $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss") : null;
                             $.ajax({
                                 url: SITEURL + '/calendar-events/' + event.id,
                                 data: {
-                                    title: event.title,
-                                    start: event_start,
-                                    end: event_end,
-                                    _method: 'PUT'
+                                    _method: 'PUT',
+                                    event_name: event.title,
+                                    event_start: event_start,
+                                    event_end: event_end,
                                 },
                                 type: "POST",
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken
+                                },
                                 success: function (response) {
-                                    displayMessage("Event updated");
+                                    displayMessage("Event updated", 'success');
+                                },
+                                error: function (error) {
+                                    revertFunc();
+                                    displayMessage("Error updating event: " + JSON.stringify(error), 'error');
                                 }
                             });
                         },
                         eventClick: function (event) {
-                            var eventDelete = confirm("Are you sure?");
+                            var eventDelete = confirm("Are you sure you want to delete this event?");
                             if (eventDelete) {
                                 $.ajax({
                                     type: "POST",
@@ -100,11 +73,80 @@
                                     data: {
                                         _method: 'DELETE'
                                     },
+                                    headers: {
+                                        'X-CSRF-TOKEN': csrfToken
+                                    },
                                     success: function (response) {
                                         calendar.fullCalendar('removeEvents', event.id);
-                                        displayMessage("Event removed");
+                                        displayMessage("Event removed", 'success');
+                                    },
+                                    error: function (error) {
+                                        displayMessage("Error deleting event: " + JSON.stringify(error), 'error');
                                     }
                                 });
+                            }
+                        },
+                        eventResize: function (event, delta, revertFunc) {
+                            var event_start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
+                            var event_end = event.end ? $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss") : null;
+                            $.ajax({
+                                url: SITEURL + '/calendar-events/' + event.id,
+                                data: {
+                                    _method: 'PUT',
+                                    event_name: event.title,
+                                    event_start: event_start,
+                                    event_end: event_end,
+                                },
+                                type: "POST",
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken
+                                },
+                                success: function (response) {
+                                    displayMessage("Event updated", 'success');
+                                },
+                                error: function (error) {
+                                    revertFunc();
+                                    displayMessage("Error updating event: " + JSON.stringify(error), 'error');
+                                }
+                            });
+                        },
+                        eventRender: function (event, element) {
+                            element.attr('title', event.title);
+                        },
+                        select: function (event_start, event_end, allDay) {
+                            var event_name = prompt('Event Name:');
+                            if (event_name !== null) {
+                                event_name = event_name.trim(); // Trim the event_name to remove leading/trailing spaces
+                                if (event_name !== '') {
+                                    var event_start = $.fullCalendar.formatDate(event_start, "Y-MM-DD HH:mm:ss");
+                                    var event_end = event_end ? $.fullCalendar.formatDate(event_end, "Y-MM-DD HH:mm:ss") : null;
+                                    $.ajax({
+                                        url: SITEURL + "/calendar-events",
+                                        data: {
+                                            event_name: event_name,
+                                            event_start: event_start,
+                                            event_end: event_end,
+                                        },
+                                        type: "POST",
+                                        headers: {
+                                            'X-CSRF-TOKEN': csrfToken
+                                        },
+                                        success: function (data) {
+                                            displayMessage("Event created.", 'success');
+                                            calendar.fullCalendar('renderEvent', {
+                                                id: data.id,
+                                                title: event_name, // Event name without "12a" prefix
+                                                start: event_start,
+                                                end: event_end,
+                                                allDay: allDay
+                                            }, true);
+                                            calendar.fullCalendar('unselect');
+                                        },
+                                        error: function (error) {
+                                            displayMessage("Error creating event: " + JSON.stringify(error), 'error');
+                                        }
+                                    });
+                                }
                             }
                         }
                     });
@@ -114,8 +156,14 @@
                 }
             });
 
-            function displayMessage(message) {
-                toastr.success(message, 'Event');
+            function displayMessage(message, type) {
+                toastr.options = {
+                    positionClass: 'toast-top-right',
+                    progressBar: true,
+                    timeOut: 3000, // Display time for each notification (in milliseconds)
+                    extendedTimeOut: 1000, // Additional display time for user interaction (in milliseconds)
+                };
+                toastr[type](message);
             }
         });
     </script>
