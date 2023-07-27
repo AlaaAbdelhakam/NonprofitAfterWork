@@ -28,6 +28,36 @@
             var SITEURL = "{{ url('/') }}";
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
+            var updateEventName = function (event) {
+                var newEventName = prompt("Enter the new event name:", event.title);
+                if (newEventName !== null) {
+                    newEventName = newEventName.trim();
+                    if (newEventName !== "") {
+                        $.ajax({
+                            url: SITEURL + '/calendar-events/' + event.id,
+                            data: {
+                                _method: 'PUT',
+                                event_name: newEventName,
+                                event_start: $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss"),
+                                event_end: event.end ? $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss") : null,
+                            },
+                            type: "POST",
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            success: function (response) {
+                                event.title = newEventName; // Update the event name in the FullCalendar
+                                displayMessage("Event name updated", 'success');
+                                $('#full_calendar_events').fullCalendar('updateEvent', event); // Update the event in the calendar
+                            },
+                            error: function (error) {
+                                displayMessage("Error updating event: " + JSON.stringify(error), 'error');
+                            }
+                        });
+                    }
+                }
+            };
+
             // Fetch events from the server using AJAX GET request
             $.ajax({
                 url: SITEURL + "/calendar-events",
@@ -36,9 +66,9 @@
                     // Initialize the FullCalendar with the fetched events
                     var calendar = $('#full_calendar_events').fullCalendar({
                         editable: true,
-                        selectable: true, // Enable select event for creating new events
-                        selectHelper: true, // Show a helper when selecting a time slot
-                        events: data, // Use the fetched events here
+                        selectable: true,
+                        selectHelper: true,
+                        events: data,
                         displayEventTime: true,
                         eventDrop: function (event, delta, revertFunc) {
                             var event_start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
@@ -63,28 +93,6 @@
                                     displayMessage("Error updating event: " + JSON.stringify(error), 'error');
                                 }
                             });
-                        },
-                        eventClick: function (event) {
-                            var eventDelete = confirm("Are you sure you want to delete this event?");
-                            if (eventDelete) {
-                                $.ajax({
-                                    type: "POST",
-                                    url: SITEURL + '/calendar-events/' + event.id,
-                                    data: {
-                                        _method: 'DELETE'
-                                    },
-                                    headers: {
-                                        'X-CSRF-TOKEN': csrfToken
-                                    },
-                                    success: function (response) {
-                                        calendar.fullCalendar('removeEvents', event.id);
-                                        displayMessage("Event removed", 'success');
-                                    },
-                                    error: function (error) {
-                                        displayMessage("Error deleting event: " + JSON.stringify(error), 'error');
-                                    }
-                                });
-                            }
                         },
                         eventResize: function (event, delta, revertFunc) {
                             var event_start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
@@ -116,7 +124,7 @@
                         select: function (event_start, event_end, allDay) {
                             var event_name = prompt('Event Name:');
                             if (event_name !== null) {
-                                event_name = event_name.trim(); // Trim the event_name to remove leading/trailing spaces
+                                event_name = event_name.trim();
                                 if (event_name !== '') {
                                     var event_start = $.fullCalendar.formatDate(event_start, "Y-MM-DD HH:mm:ss");
                                     var event_end = event_end ? $.fullCalendar.formatDate(event_end, "Y-MM-DD HH:mm:ss") : null;
@@ -135,7 +143,7 @@
                                             displayMessage("Event created.", 'success');
                                             calendar.fullCalendar('renderEvent', {
                                                 id: data.id,
-                                                title: event_name, // Event name without "12a" prefix
+                                                title: event_name,
                                                 start: event_start,
                                                 end: event_end,
                                                 allDay: allDay
@@ -147,6 +155,30 @@
                                         }
                                     });
                                 }
+                            }
+                        },
+                        eventClick: function (event) {
+                            var eventDelete = confirm("Are you sure you want to delete this event?");
+                            if (eventDelete) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: SITEURL + '/calendar-events/' + event.id,
+                                    data: {
+                                        _method: 'DELETE'
+                                    },
+                                    headers: {
+                                        'X-CSRF-TOKEN': csrfToken
+                                    },
+                                    success: function (response) {
+                                        calendar.fullCalendar('removeEvents', event.id);
+                                        displayMessage("Event removed", 'success');
+                                    },
+                                    error: function (error) {
+                                        displayMessage("Error deleting event: " + JSON.stringify(error), 'error');
+                                    }
+                                });
+                            } else {
+                                updateEventName(event);
                             }
                         }
                     });
@@ -160,8 +192,8 @@
                 toastr.options = {
                     positionClass: 'toast-top-right',
                     progressBar: true,
-                    timeOut: 3000, // Display time for each notification (in milliseconds)
-                    extendedTimeOut: 1000, // Additional display time for user interaction (in milliseconds)
+                    timeOut: 3000,
+                    extendedTimeOut: 1000,
                 };
                 toastr[type](message);
             }
