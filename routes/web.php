@@ -32,10 +32,10 @@ Route::post('songs', [SongsController::class, 'store'])->name('song.store');
 // Route::post('fullcalendar/delete', [FullCalendarController::class, 'destroy']);
 Auth::routes(['register'=>false]);
 
-Route::get('calendar', [HomeController::class, 'index'])->name('calender');
+Route::get('calendar', [HomeController::class, 'index']);
 
 Route::get('/calendar-events', [CalenderController::class, 'getEvents']);
-Route::get('/mycalendar', [CalenderController::class, 'index']);
+Route::get('/mycalendar', [CalenderController::class, 'index'])->name('calender');
 Route::post('/calendar-events', [CalenderController::class, 'store']);
 Route::put('/calendar-events/{id}', [CalenderController::class, 'update']);
 Route::delete('/calendar-events/{id}', [CalenderController::class, 'destroy']);
